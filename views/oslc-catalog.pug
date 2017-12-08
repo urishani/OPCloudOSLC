@@ -1,0 +1,73 @@
+extends layout
+
+block content
+  hr
+  div(style="margin-left: 20px")
+    h2 Prefixes
+    ul
+      li  @prefix oslc: &lt;http://open-service.net/ns/core#>   .
+      li  @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>   .
+      li  @prefix dcterms: &lt;http://purl.org/dc/terms/>   .
+      li  @prefix opm: &lt;http://opm.technion.ac.il/opm#>   .
+    h2 catalog
+    ul
+      li
+        a &lt;#{host}/oslc/catalog>
+      ul
+        li a oslc:ServiceProviderCatalog 
+          b ;
+        li dcterms:title "OPM OSLC Provider Catalog" 
+          b ;
+        li dcterms:description "OPM OSLC AM projects hosted on this service provider."  
+          b ;
+        li oslc:domain &lt;http://open-services.net/ns/am#>  
+          b ;
+        li dcterms:publisher
+        ul
+          li [   rdf:type oslc:Publisher  
+            b ;
+          ul
+            li dcterms:title "Object Process Methodology - OPM"  
+              b ;
+            li oslc:         "OPM"
+              b ;
+            li dcterms:identifier "http://opm.technion.ac.il/opm#v2.0" 
+          li ] 
+            b ;
+        li oslc:oauthConfiguration
+        ul
+          li [   rdf:type oslc:OAuthConfiguration  
+            b ;
+          ul
+            li oslc:oauthRequestTokenURI &lt;#{locals["oauth-request-token-uri"]}> 
+              b ;
+            li oslc:authorizationURI &lt;#{locals["oauth-authorize-uri"]}> 
+              b ;
+            li oslc:oauthAccessTokenURI &lt;#{locals["oauth-access-token-uri"]}> 
+          li ]  
+            b ;
+    h2 list all service providers urls (in our case: OPM projects):
+    ul
+      for sp in serviceProviderUrl
+        li  oslc:serviceProvider 
+          a &lt;#{host}/oslc/#{sp.model}/serviceProvider> 
+          b #{sp.comma}
+    h2 Service providers info:
+    ul
+      for sp in serviceProviderUrl
+        li 
+          a &lt;#{host}/oslc/#{sp.model}/serviceProvider>
+          ul
+            li a oslc:ServiceProvider 
+              b ;
+            li dcterms:title "#{sp.name}" 
+              b ;
+            li dcterms:description "#{sp.description}" 
+              b .
+
+
+
+
+
+
+
