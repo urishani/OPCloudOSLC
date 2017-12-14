@@ -66,9 +66,9 @@ const fbApp = firebase.initializeApp(environment.firebaseCredentials);
 
 const defaultDatabase = fbApp.database();
 
-const modelnames = defaultDatabase.ref("/modelnames/");
+const modelnames = defaultDatabase.ref("/modelnames_/");
 const counter = defaultDatabase.ref("/counter/");
-const models = defaultDatabase.ref("/models/");
+const models = defaultDatabase.ref("/models_/");
 
 // modelnames.once("value").then( (snapshot) => {
 //   const mNames = snapshot.val();
