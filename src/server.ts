@@ -91,15 +91,16 @@ const mNames = getDbnames(setIds);
 // Some utils
 function setIds(mnames: any) {
       counter.once("value").then((snapshot: any) => {
-        let cnt = snapshot.val();
+        let cnt = (snapshot.val() || {counter: 0}).counter;
         const origcnt = cnt;
         for (const element in mnames) {
           if (!mnames[element].id) {
             cnt++;
-            mnames[element] = { id: makeModelId(cnt) };
+            mnames[element].id = makeModelId(cnt);
           }
         }
-        if (cnt > snapshot.val()) {
+        if (cnt > origcnt) {
+          console.log("Created ids. cnt: " + origcnt + " -> " + cnt);
           defaultDatabase.ref("counter").update({counter: cnt}, err => {
             if (err)
               console.log(err);

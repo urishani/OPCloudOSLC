@@ -93,7 +93,7 @@ export let getCatalog = function(handler: any) {
                 res.render("oslc-catalog", options); // mergeTemplate(toHtml(catalogTemplate()), options)});
             else {
                 res.set("Content-Type", "text/turtle");
-                res.send(200, mergeTemplate(catalogTemplate(), options));
+                res.status(200).send(mergeTemplate(catalogTemplate(), options));
             }
         });
     };
