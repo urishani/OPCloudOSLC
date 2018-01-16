@@ -1,0 +1,62 @@
+extends layout
+
+block content
+  hr
+  div(style="margin-left: 20px")
+    h2 Prefixes
+    ul
+      li(style="list-style-type: none;")  @prefix oslc: &lt;http://open-service.net/ns/core#>   .
+      li(style="list-style-type: none;")  @prefix oslc_am: &lt;http://open-service.net/ns/am#>   .
+      li(style="list-style-type: none;")  @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>   .
+      li(style="list-style-type: none;")  @prefix dcterms: &lt;http://purl.org/dc/terms/>   .
+      li(style="list-style-type: none;")  @prefix foaf: &lt;http://http://xmlns.com/foaf/0.1/> .
+      li(style="list-style-type: none;")  @prefix opm: &lt;http://opm.technion.ac.il/opm#>   .
+      li(style="list-style-type: none;")  @prefix model: &lt;#{host}/oslc/#{model}/>   .
+    h2 Service Provider
+    ul
+      li(style="list-style-type: none;") <a href="#{host}/oslc/#{model}/ServiceProvider">model:ServiceProvider</a>
+      ul
+        li(style="list-style-type: none;") a oslc:ServiceProvider 
+          b ;
+          li(style="list-style-type: none;") oslc:service
+          ul
+            li(style="list-style-type: none;") [ a oslc:service
+              b ;
+            ul  
+              li(style="list-style-type: none;") oslc:domain oslc_am: 
+                b ;
+              li(style="list-style-type: none;") oslc:queryCapability
+              ul
+                li(style="list-style-type: none;") [ a oslc:QueryCapability 
+                  b ;
+                ul
+                  li(style="list-style-type: none;") oslc:queryBase <a href="#{host}/oslc/#{model}/resource">model:resource</a>
+                    b ;
+                  li(style="list-style-type: none;") oslc:resourceType oslc_am:1.0/Resource
+                    b ;
+                  li(style="list-style-type: none;") oslc:label "#{name}" 
+                    b ;
+                  li(style="list-style-type: none;") dcterms:title "#{description}"
+                li(style="list-style-type: none;") ] 
+                  b ;
+            li(style="list-style-type: none;") ] 
+              b ;
+    h2 Preferred prefixes for this provider:
+    ul
+      for pd in prefixDefinition
+        li(style="list-style-type: none;") oslc:prefixDefinition
+        ul
+          li(style="list-style-type: none;") [ a oslc:PrefixDefinition
+            b ;
+            ul
+              li(style="list-style-type: none;") oslc:prefix "#{pd.prefix}"
+                b ;
+              li(style="list-style-type: none;") oslc:prefixBase &lt;#{pd.nameSpaceUri}>
+          li(style="list-style-type: none;") ]
+            b  #{pd.semicolon}
+
+
+
+
+
+

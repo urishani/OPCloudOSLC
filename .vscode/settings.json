@@ -10,8 +10,13 @@
     "tslint.autoFixOnSave": true,
     "tslint.exclude": "**/node_modules/**/*",
     "cSpell.words": [
+        "dcterms",
+        "foaf",
         "jsonld",
         "lusca",
+        "model",
+        "name",
+        "oslc",
         "rdflib"
     ]
 }

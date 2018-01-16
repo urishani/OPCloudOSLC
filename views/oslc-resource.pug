@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  hr
+  div(style="margin-left: 20px")
+    h2 Prefixes
+    ul
+      li(style="list-style-type: none;")  @prefix oslc: &lt;http://open-service.net/ns/core#>   .
+      li(style="list-style-type: none;")  @prefix oslc_am: &lt;http://open-service.net/ns/am#>   .
+      li(style="list-style-type: none;")  @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>   .
+      li(style="list-style-type: none;")  @prefix dcterms: &lt;http://purl.org/dc/terms/>   .
+      li(style="list-style-type: none;")  @prefix foaf: &lt;http://http://xmlns.com/foaf/0.1/> .
+      li(style="list-style-type: none;")  @prefix opm: &lt;http://opm.technion.ac.il/opm#>   .
+      li(style="list-style-type: none;")  @prefix model: &lt;#{host}/oslc/#{model}/>   .
+    h2 SerResources
+    <a href="#{host}/oslc/#{model}/resource\##{id}">model:resource\##{id}</a>
+    ul
+      li(style="list-style-type: none;") a opm:#{type}
+        b ;
+      li(style="list-style-type: none;") oslc:label "#{name}" 
+        b ;
+      li(style="list-style-type: none;") oslc:description "#{description}" 
+        b ;
+      for (element in elements)
+        li(style="list-style-type: none;") #{element.property} "#{element.value}" 
+          b #{element.semicolon}
+
+
+
+
+
+

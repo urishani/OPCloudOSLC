@@ -5,64 +5,65 @@ block content
   div(style="margin-left: 20px")
     h2 Prefixes
     ul
-      li  @prefix oslc: &lt;http://open-service.net/ns/core#>   .
-      li  @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>   .
-      li  @prefix dcterms: &lt;http://purl.org/dc/terms/>   .
-      li  @prefix opm: &lt;http://opm.technion.ac.il/opm#>   .
+      li(style="list-style-type: none;")  @prefix oslc: &lt;http://open-service.net/ns/core#>   .
+      li(style="list-style-type: none;")  @prefix oslc_am: &lt;http://open-service.net/ns/am#>   .
+      li(style="list-style-type: none;")  @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>   .
+      li(style="list-style-type: none;")  @prefix dcterms: &lt;http://purl.org/dc/terms/>   .
+      li(style="list-style-type: none;")  @prefix foaf: &lt;http://http://xmlns.com/foaf/0.1/> .
+      li(style="list-style-type: none;")  @prefix opm: &lt;http://opm.technion.ac.il/opm#>   .
     h2 catalog
     ul
       li
         a &lt;#{host}/oslc/catalog>
       ul
-        li a oslc:ServiceProviderCatalog 
+        li(style="list-style-type: none;") a oslc:ServiceProviderCatalog 
           b ;
-        li dcterms:title "OPM OSLC Provider Catalog" 
+        li(style="list-style-type: none;") dcterms:title "OPM OSLC Provider Catalog" 
           b ;
-        li dcterms:description "OPM OSLC AM projects hosted on this service provider."  
+        li(style="list-style-type: none;") dcterms:description "OPM OSLC AM projects hosted on this service provider."  
           b ;
-        li oslc:domain &lt;http://open-services.net/ns/am#>  
+        li(style="list-style-type: none;") oslc:domain oslc_am:  
           b ;
-        li dcterms:publisher
+        li(style="list-style-type: none;") dcterms:publisher
         ul
-          li [   rdf:type oslc:Publisher  
+          li(style="list-style-type: none;") [   rdf:type oslc:Publisher  
             b ;
           ul
-            li dcterms:title "Object Process Methodology - OPM"  
+            li(style="list-style-type: none;") dcterms:title "Object Process Methodology - OPM"  
               b ;
-            li oslc:         "OPM"
+            li(style="list-style-type: none;") oslc:         "OPM"
               b ;
-            li dcterms:identifier "http://opm.technion.ac.il/opm#v2.0" 
-          li ] 
+            li(style="list-style-type: none;") dcterms:identifier "http://opm.technion.ac.il/opm#v2.0" 
+          li(style="list-style-type: none;") ] 
             b ;
-        li oslc:oauthConfiguration
+        li(style="list-style-type: none;") oslc:oauthConfiguration
         ul
-          li [   rdf:type oslc:OAuthConfiguration  
+          li(style="list-style-type: none;") [   rdf:type oslc:OAuthConfiguration  
             b ;
           ul
-            li oslc:oauthRequestTokenURI &lt;#{locals["oauth-request-token-uri"]}> 
+            li(style="list-style-type: none;") oslc:oauthRequestTokenURI &lt;#{locals["oauth-request-token-uri"]}> 
               b ;
-            li oslc:authorizationURI &lt;#{locals["oauth-authorize-uri"]}> 
+            li(style="list-style-type: none;") oslc:authorizationURI &lt;#{locals["oauth-authorize-uri"]}> 
               b ;
-            li oslc:oauthAccessTokenURI &lt;#{locals["oauth-access-token-uri"]}> 
-          li ]  
+            li(style="list-style-type: none;") oslc:oauthAccessTokenURI &lt;#{locals["oauth-access-token-uri"]}> 
+          li(style="list-style-type: none;") ]  
             b ;
     h2 list all service providers urls (in our case: OPM projects):
     ul
       for sp in serviceProviderUrl
-        li  oslc:serviceProvider 
-          a &lt;#{host}/oslc/#{sp.model}/serviceProvider> 
+        li(style="list-style-type: none;")  oslc:serviceProvider 
+          <a href="#{host}/oslc/#{sp.model}/serviceProvider">&lt;#{host}/oslc/#{sp.model}/serviceProvider></a> 
           b #{sp.comma}
     h2 Service providers info:
     ul
       for sp in serviceProviderUrl
-        li 
-          a &lt;#{host}/oslc/#{sp.model}/serviceProvider>
+        li(style="list-style-type: none;") <a href="#{host}/oslc/#{sp.model}/serviceProvider">&lt;#{host}/oslc/#{sp.model}/serviceProvider></a> 
           ul
-            li a oslc:ServiceProvider 
+            li(style="list-style-type: none;") a oslc:ServiceProvider 
               b ;
-            li dcterms:title "#{sp.name}" 
+            li(style="list-style-type: none;") dcterms:title "#{sp.name}" 
               b ;
-            li dcterms:description "#{sp.description}" 
+            li(style="list-style-type: none;") dcterms:description "#{sp.description}" 
               b .
 
 
