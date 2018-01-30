@@ -19,9 +19,9 @@ import * as passport from 'passport';
 
 import {mergeTemplate, toHtml, makeId} from './utils/utils';
 
-//import {OpmModel} from 'opcloud/src/app/models/OpmModel';
-//import {OpmLogicalElement} from 'opcloud/src/app/models/LogicalPart/OpmLogicalElement';
-//import {OpmVisualElement} from 'opcloud/src/app/models/VisualPart/OpmVisualElement';
+import {OpmModel} from 'opcloud/src/app/models/OpmModel';
+import {OpmLogicalElement} from 'opcloud/src/app/models/LogicalPart/OpmLogicalElement';
+import {OpmVisualElement} from 'opcloud/src/app/models/VisualPart/OpmVisualElement';
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -37,7 +37,7 @@ import * as homeController from './controllers/home';
 import * as apiController from './controllers/api';
 
 
-let opmModel = new OpmModel();
+// let opmModel = new OpmModel();
 /**
  * API keys and Passport configuration.
  */
@@ -80,90 +80,116 @@ const models_ = defaultDatabase.ref('/models_/');
 //   setIds(mNames);
 // };
 
-let modelNames = undefined;
-const modelIndex = {};
-let currentModel = undefined;
-let currentModelId = undefined;
+let modelNames,
+    modelIndex,
+    currentModel,
+    currentModelId;
 
+function getModelIndex(callback) {
+    if (! modelIndex) {
+        getDbnames((dbNames) => {
+            modelNames = dbNames;
+            modelIndex = {};
+            for (const name in modelNames) {
+                const element = modelNames[name];
+                modelIndex[element['id']] = element;
+            }
+            callback(modelIndex);
+        });
+    }
+}
 function getDbnames(callback: any): any {
-  counter.once('value').then((snapshot: any) => {
-    let cnt = (snapshot.val() || {counter: 0}).counter;
-    const origCnt = cnt;
-    modelnames_.once('value').then( (snapshot) => {
-      const mNames_ = snapshot.val();
-      modelnames.once('value').then((snapshot) => {
-        const mNames = snapshot.val();
-        for (const name in mNames) {
-          if (mNames_[name] === undefined) {
-            const element = {
-              name: name,
-              description: "No description"
-            };
-            mNames_[name] = element;
-          }
-          const element = mNames_[name];
-          if (! element.id) {
-            cnt++;
-            element.id = makeId(cnt);
-          }
-        }
-        modelNames = mNames_;
-        for (const name in modelNames) {
-          const element = modelNames[name];
-          modelIndex[element['id']] = element;
-        }
+  console.log('in getDbnames');
+  counter.once('value').then(
+        (counterSS: any) => {
+            let cnt = (counterSS.val() || {counter: 0}).counter;
+            console.log(`cnt=${cnt}`);
+            const origCnt = cnt;
+            modelnames_.once('value').then( (modelNames_SS) => {
+                const mNames_ = modelNames_SS.val() || {};
+                modelnames.once('value').then((modelNamesSS) => {
+                    const mNames = modelNamesSS.val() || {};
+                    for (const name in mNames) {
+                        if (mNames_[name] === undefined) {
+                            const element = {
+                                name: name,
+                                description: 'No description'
+                            };
+                            mNames_[name] = element;
+                        }
+                        const element = mNames_[name];
+                        if (! element.id) {
+                            cnt++;
+                            element.id = makeId(cnt);
+                        }
+                    }
+                    modelNames = mNames_;
 
-        if (cnt > origCnt) {
-          counter.update({counter: cnt}, err => {
-            if (err)
-              console.log(err);
-          });
-          modelnames_.update(mNames_, err => {
-            if (err)
-              console.log(err);
-          });
-        }
+                    if (cnt > origCnt) {
+                        counter.update({counter: cnt}, err => {
+                            if (err)
+                                console.log(err);
+                        });
+                        modelnames_.update(mNames_, err => {
+                            if (err)
+                                console.log(err);
+                        });
+                    }
+                });
+            });
+            if (callback)
+                callback(modelNames);
+            },
+      function (reason: any) {
+          console.log(`call for counter rejected due to: ${reason}`);
       });
-
-    });
-    if (callback)
-      callback(modelNames);
-    return modelNames;
-  });
 }
 
 function getModel(id, callback: any) {
-  const modelName = modelIndex[id].name;
-  const modelDescription =  modelIndex[id].description;
-  const modelRef = defaultDatabase.ref('/models/' + modelName);
-  if (currentModelId == id) {
-    if (callback) {
-      callback(currentModel);
-    }
-  } else {
-    modelRef.once('value').then( (snapshot) => {
-      let modelJson = snapshot.val();
-      const opmModel = (typeof modelJson === 'string')? JSON.parse(modelJson) : modelJson;
-      //if (modelJson) {
-      //  opmModel.fromJson((typeof modelJson === 'string')? modelJson : JSON.stringify(modelJson));
-      //}
-//      if (opmModel) {
-        if (fixModelIds(opmModel)) {
-          //modelJson = opmModel.toJson();
-          modelRef.update((typeof modelJson === 'string')?JSON.parse(modelJson):modelJson, (err) => {
-            console.log(err);
-          });
-  //      }
-  
-      }
-      currentModel = opmModel;
-      currentModelId = id;
-      console.log("Current Model: id= " + id + ", name=" + modelName);
-      if (callback) {
-        callback(opmModel);
-      }
-    });
-  }
+   getModelIndex((modelIndexSS) => {
+       if (! modelIndexSS[id]) {
+           if (callback) {
+               callback(null);
+           }
+           return;
+       }
+       const modelName = modelIndex[id].name;
+       const modelDescription =  modelIndex[id].description;
+       const modelRef = defaultDatabase.ref('/models/' + modelName);
+       if (currentModelId === id) {
+           if (callback) {
+             callback(currentModel);
+           }
+       } else {
+           modelRef.once('value').then( (modelSS) => {
+               const modelJson = modelSS.val();
+               let m;
+               if (typeof modelJson === 'string') {
+                   m = JSON.parse(modelJson);
+                   modelRef.update(m,
+                       (error) => {
+                            console.log(`updated model with JSON object instead of string ${error?'failed with' + error : 'succeeded'}`);
+                   });
+               }
+               const opmModel = m || modelJson;
+               if (opmModel && fixModelIds(opmModel)) {
+                   modelRef.update(
+                       (typeof modelJson === 'string') ? JSON.parse(modelJson) : modelJson,
+                       (err) => {
+                           console.log(err);
+                       });
+                   }
+               if (opmModel) {
+                   currentModel = opmModel;
+                   currentModelId = id;
+                   console.log('Current Model: id= ' + id + ', name=' + modelName);
+               }
+               if (callback) {
+                   callback(opmModel);
+               }
+           });
+       }
+   });
 }
 
 
@@ -276,8 +302,8 @@ app.get('/oslc/:model/resource', oslcController.getAllResources(getModel));
 app.get('/oslc/:model/resource/:id', oslcController.getResource(getModel));
 app.put('/oslc/:model/resource/:id', oslcController.putResource(getModel));
 app.delete('/oslc/:model/resource/:id', oslcController.delResource(getModel));
-app.post('/oslc/:model/resource:/id', oslcController.postResource(getModel));
-//app.get('/oslc/:model/query', oslcController.queryResource);
+app.post('/oslc/:model/resource/:id', oslcController.postResource(getModel));
+// app.get('/oslc/:model/query', oslcController.queryResource);
 
 
 /**

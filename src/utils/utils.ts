@@ -1,7 +1,21 @@
 'use strict';
 
+const partition = (template: string, key1: string, key2: string): [string, string, string] => {
+    const i = template.indexOf(key1);
+    if (i < 0) return ['', template, ''];
+    const j = template.substr(i + key1.length).indexOf(key2);
+    if (j < 0) {
+        console.log('error in partitioning [${template}: key2 [${key2}] not found following key1 [${key1}].');
+        return ['', template, ''];
+    }
+    const pre = template.substr(0, i);
+    const body = template.substr(i + key1.length, j);
+    const post = template.substr(i + key1.length + j + key2.length);
+    return [pre, body, post];
+};
+
 export let mergeTemplate = (template: string, options: any, escape = '_'): string => {
-    if (Object.keys(options).length == 0) return template;
+    if (Object.keys(options).length === 0) return template;
     escape = ((escape || '__') + '__').substr(0, 2);
     // if (escape.length < 2) escape += escape;
     for (const option in options) {
@@ -28,20 +42,6 @@ export let mergeTemplate = (template: string, options: any, escape = '_'): strin
     }
     return template;
   };
-
-const partition = (template: string, key1: string, key2: string): [string, string, string] => {
-   const i = template.indexOf(key1);
-   if (i < 0) return ['', template, ''];
-   const j = template.substr(i + key1.length).indexOf(key2);
-   if (j < 0) {
-     console.log('error in partitioning [${template}: key2 [${key2}] not found following key1 [${key1}].');
-     return ['', template, ''];
-   }
-   const pre = template.substr(0, i);
-   const body = template.substr(i + key1.length, j);
-   const post = template.substr(i + key1.length + j + key2.length);
-   return [pre, body, post];
-};
 
 const hasRefs = (line: string): boolean => {
   return line.indexOf('<_host_//') >= 0;
@@ -91,4 +91,4 @@ export let makeId = (cnt: number, mark: string = 'M' ): string => {
   s = s.substring(0, Math.max(0, s.length - n.length)) + n;
   // const s = util.format('M%i', cnt ) ;
   return s;
-}
+};

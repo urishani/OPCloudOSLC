@@ -19,29 +19,33 @@ export let getResource = function(handler: any) {
         console.log('getResource: Calculated host: ' + hostname);
         const modelId = req.params['model'];
         const resourceId = req.params['id'];
-        handler(modelId, (model: OpmModel) => {
-            const logicalElements = model.logicalElements;
-            for (let resource of logicalElements) {
-                if (resource["id"] == resourceId) {
+        handler(modelId, (model: Object) => {
+//            console.log(`model in json: [ ${JSON.stringify(model)}]`);
+            const logicalElements = model ? model['logicalElements'] : [];
+            for (const resource of logicalElements) {
+                if (resource['id'] == resourceId) {
                     const options = {
-                        properties: [], 
-                        title: 'OPM model ' + modelId + ' logical element ' + resource.name + ', id: ' + resourceId,
+                        properties: [],
+                        title: 'model ' + modelId + ' logical element id: ' + resourceId,
                         host: hostname,
                         model: modelId,
-                        name: resource.name,
-                        type: resource.constructor.name,
-                        description: resource["description"] || "No description for this resource",
+                        id: resource['id'],
+                        type: resource['name'],
+                        description: resource['description'] || "No description for this resource"
                     };
-                    for (let param in resource.getElementParams()) {
+                    console.log(`resource in json [${JSON.stringify(resource)}]`);
+                    options.properties.push({property: 'text', value: resource['text'], semicolon: ';'});
+                    options.properties.push({property: 'linkConnectionType', value: resource['linkConnectionType'], semicolon: ';'});
+                    options.properties.push({property: 'linkType', value: resource['linkType'], semicolon: ';'});
+                    for (const param in {}) { // resource.getElementParams()) {
                        options.properties.push({
                             property: param,
                             value: resource[param],
                             semicolon: ';',
-                        })
+                        });
                     }
-                    options.properties[options.properties.length-1].semicolon = '.';
-        
-                    console.log('resource options: ' + options);
+                    options.properties[options.properties.length-1]['semicolon'] = '.';
+                    console.log(`resource options: [${options}`);
                     if (req.accepts('html'))
                         res.render('oslc-resource', options);
                     else {
@@ -49,7 +53,7 @@ export let getResource = function(handler: any) {
                         res.status(200).send(mergeTemplate(resourceTemplate(), options));
                     }
                 }
-            };
+            }
         });
     };
 };
@@ -107,7 +111,7 @@ export let getCatalog = function(handler: any) {
         console.log('Calculated host: ' + hostname);
         handler((modelNames: any) => {
             const sps = [];
-            let last = '';
+            console.log(JSON.stringify(modelNames));
             for (const aModel in modelNames) {
                 sps.push({
                     model: modelNames[aModel].id || 'M000any',
@@ -142,9 +146,8 @@ export let getServiceProvider = function(handler: any) {
     return function (req: Request, res: Response) {
         const hostname = req.protocol + '://' + req.headers.host;
         console.log('GetServiceProvider: Calculated host: ' + hostname);
-        const modelId = req.params['model'];
         handler((modelNames: any) => {
-        const modelId = req.params['model'];
+            const modelId = req.params['model'];
             let aModel;
             for (const modelName in modelNames) {
                 if (modelNames[modelName].id === modelId) {
@@ -195,7 +198,7 @@ const makeElementId = (modelElement: OpmLogicalElement<OpmVisualElement>): strin
         model["changeTime"] = new Date();
     }
     return modelElement["id"];
-}
+};
 export let getAllResources = function(handler: any) {
     return function (req: Request, res: Response) {
         const hostname = req.protocol + '://' + req.headers.host;
@@ -206,14 +209,14 @@ export let getAllResources = function(handler: any) {
             const description = model ? model['description'] : 'NoModel';
             const logicalElements = model ? model['logicalElements'] : [];
             const options = {
-                elements: [], 
+                elements: [],
                 title: `OPM model ${modelId} logical elements`,
                 host: hostname,
                 model: modelId,
                 name: name || 'No model name',
                 description: description || 'No description for this model',
             };
-            for (let logicalElement of model['logicalElements']) {
+            for (const logicalElement of model['logicalElements']) {
                 // const entityParams = logicalElement.getElementParams();
                 options.elements.push({
                     id: logicalElement['id'] || 'NoId',
@@ -221,7 +224,7 @@ export let getAllResources = function(handler: any) {
                     description: logicalElement['description'] || "No description",
                     type: logicalElement['name'] || 'NoType',
                 });
-            };
+            }
             console.log('resource options: ' + JSON.stringify(options));
             if (req.accepts('html'))
                 res.render('oslc-all-resources', options);

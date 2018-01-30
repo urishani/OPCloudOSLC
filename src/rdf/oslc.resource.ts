@@ -6,9 +6,9 @@ export let resourceTemplate = (): string => {
 @prefix foaf: <http://http://xmlns.com/foaf/0.1/> .
 @prefix opm: <http://opm.technion.ac.il/opm#> .
 @prefix model: <_host_/oslc/_model_/> .
-model:resource#_id_  a opm:_type_ ;
-  oslc:name "_id_" ; 
-  dcterms:title "_text_" ; 
+model:resource/_id_  a opm:_type_ ;
+  oslc:name "_id_" ;
+  dcterms:title "_text_" ;
   dcterms:description "_description_ _semicolon_
 # Resources:
 _properties_
@@ -16,5 +16,4 @@ _properties_
 _/properties_
 `;
 };
-  
 

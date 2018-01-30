@@ -13,7 +13,7 @@ block content
       li(style="list-style-type: none;")  @prefix opm: &lt;http://opm.technion.ac.il/opm#>   .
       li(style="list-style-type: none;")  @prefix model: &lt;#{host}/oslc/#{model}/>   .
     h2 SerResources
-    <a href="#{host}/oslc/#{model}/resource\##{id}">model:resource\##{id}</a>
+    <a href="#{host}/oslc/#{model}/resource/#{id}">model:resource/#{id}</a>
     ul
       li(style="list-style-type: none;") a opm:#{type}
         b ;
@@ -21,9 +21,9 @@ block content
         b ;
       li(style="list-style-type: none;") oslc:description "#{description}" 
         b ;
-      for (element in elements)
-        li(style="list-style-type: none;") #{element.property} "#{element.value}" 
-          b #{element.semicolon}
+      for property in properties
+        li(style="list-style-type: none;") opm:#{property.property} "#{property.value}"
+          b #{property.semicolon}
 
 
 

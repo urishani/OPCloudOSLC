@@ -18,7 +18,7 @@ block content
       h2 Resources
       ul
         for element in elements
-          li(style="list-style-type: none;") <a href="#{host}/oslc/#{model}/resource##{element.id}">model:resource##{element.id}</a> a opm:#{element.type}
+          li(style="list-style-type: none;") <a href="#{host}/oslc/#{model}/resource/#{element.id}">model:resource/#{element.id}</a> a opm:#{element.type}
             b ;
           ul
             li(style="list-style-type: none;") oslc:name "#{element.id}"

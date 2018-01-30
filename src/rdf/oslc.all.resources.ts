@@ -7,9 +7,9 @@ export let allResourcesTemplate = (): string => {
 @prefix model: <_host_/oslc/_model_/> .
 # Resources:
 _elements_
-model:resource#_id_ a opm:_type_ ;  
-  oslc:name "_id_" ; 
-  dcterms:title "_name_" ; 
+model:resource/_id_ a opm:_type_ ;
+  oslc:name "_id_" ;
+  dcterms:title "_name_" ;
   dcterms:description "_description_ .
 _/elements_
 `;
