@@ -33,7 +33,7 @@ export let getResource = function(handler: any) {
                         type: resource['name'],
                         description: resource['description'] || "No description for this resource"
                     };
-                    console.log(`resource in json [${JSON.stringify(resource)}]`);
+//                    console.log(`resource in json [${JSON.stringify(resource)}]`);
                     options.properties.push({property: 'text', value: resource['text'], semicolon: ';'});
                     options.properties.push({property: 'linkConnectionType', value: resource['linkConnectionType'], semicolon: ';'});
                     options.properties.push({property: 'linkType', value: resource['linkType'], semicolon: ';'});
@@ -45,13 +45,15 @@ export let getResource = function(handler: any) {
                         });
                     }
                     options.properties[options.properties.length-1]['semicolon'] = '.';
-                    console.log(`resource options: [${options}`);
+//                    console.log(`resource options: [${options}`);
                     if (req.accepts('html'))
                         res.render('oslc-resource', options);
                     else {
+                        console.log('Responding with turtle');
                         res.set('Content-Type', 'text/turtle');
                         res.status(200).send(mergeTemplate(resourceTemplate(), options));
                     }
+                    break;
                 }
             }
         });
@@ -118,9 +120,11 @@ export let getCatalog = function(handler: any) {
                     name: aModel,
                     description: modelNames[aModel].description || 'A model with no description',
                     comma: ', ',
+                    jsonComma: ',',
                 });
             }
             sps[sps.length-1].comma = '.';
+            sps[sps.length-1].jsonComma = '';
             const options = {
                 title: undefined,
                 host: hostname,
@@ -134,9 +138,15 @@ export let getCatalog = function(handler: any) {
             options.title = 'Catalog';
             if (req.accepts('html'))
                 res.render('oslc-catalog', options); // mergeTemplate(toHtml(catalogTemplate()), options)});
-            else {
-                res.set('Content-Type', 'text/turtle');
-                res.status(200).send(mergeTemplate(catalogTemplate(), options));
+                else if (req.accepts('application/rdf+xml')) {
+                    res.set('Content-Type', 'application/rdf+xml').
+                    status(200).send(mergeTemplate(catalogTemplate('xml'), options));
+                } else if (req.accepts('application/json-ld')) {
+                    res.set('Content-Type', 'application/json-ld').
+                    status(200).send(mergeTemplate(catalogTemplate('json'), options));
+                } else {
+                    res.set('Content-Type', 'text/turtle').
+                    status(200).send(mergeTemplate(catalogTemplate(), options));
             }
         });
     };
@@ -172,11 +182,14 @@ export let getServiceProvider = function(handler: any) {
                 ]
             };
             console.log('catalog options: ' + options);
-            if (req.accepts('html'))
+            if (req.accepts('html')) {
                 res.render('oslc-provider', options);
-            else {
-                res.set('Content-Type', 'text/turtle');
-                res.status(200).send(mergeTemplate(providerTemplate(), options));
+            } else if (req.accepts('application/rdf+xml')) {
+                res.set('Content-Type', 'application/rdf+xml').
+                status(200).send(mergeTemplate(providerTemplate('xml'), options));
+            } else {
+                res.set('Content-Type', 'text/turtle').
+                status(200).send(mergeTemplate(providerTemplate(), options));
             }
         });
     };
@@ -226,11 +239,14 @@ export let getAllResources = function(handler: any) {
                 });
             }
             console.log('resource options: ' + JSON.stringify(options));
-            if (req.accepts('html'))
+            if (req.accepts('html')) {
                 res.render('oslc-all-resources', options);
-            else {
-                res.set('Content-Type', 'text/turtle');
-                res.status(200).send(mergeTemplate(allResourcesTemplate(), options));
+            } else if (req.accepts('application/rdf+xml')) {
+                res.set('Content-Type', 'application/rdf+xml').
+                status(200).send(mergeTemplate(allResourcesTemplate('xml'), options));
+            } else {
+                res.set('Content-Type', 'text/turtle').
+                status(200).send(mergeTemplate(allResourcesTemplate(), options));
             }
         });
     };

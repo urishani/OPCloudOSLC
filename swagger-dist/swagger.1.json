@@ -1,0 +1,167 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "OSLC API for OPCloud",
+    "version": "1.0.0",
+    "title": "OSLC API for OPCloud",
+    "termsOfService": "",
+    "contact": {
+      "email": "s.uri@technion.ac.il"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "basePath": "/oslc",
+  "tags": [
+    {
+      "name": "Catalog",
+      "description": "Access the OSLC catalog of OPCloud models on this server"
+    },
+    {
+      "name": "Model",
+      "description": "Access OSLC resources of elements of an OPCloud model"
+    },
+    {
+      "name": "Element",
+      "description": "Access OSLC content of an element in an OPCloud model"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/catalog": {
+      "get": {
+        "tags": [
+          "Catalog"
+        ],
+        "summary": "Lookup the service providers for OPCloud models",
+        "description": "",
+        "operationId": "listServices",
+        "produces": [
+          "text/turtle",
+          "application/rdf+xml",
+          "application/json-ld",
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/{model}/serviceProvider": {
+      "get": {
+        "tags": [
+          "Model"
+        ],
+        "summary": "List capabilities of the OSLC service provider for a certain model",
+        "description": "",
+        "operationId": "listCapabilities",
+        "produces": [
+          "text/turtle",
+          "application/rdf+xml",
+          "application/json-ld",
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "path",
+            "description": "ID of the model identifying an OSLC service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid model ID"
+          }
+        }
+      }
+    },
+    "/{model}/resource": {
+      "get": {
+        "tags": [
+          "Element"
+        ],
+        "summary": "Get list of all elements of a certain model",
+        "description": "OSLC list of all element resources of a model is an RDF structure, usually in turtle syntax.",
+        "operationId": "getElements",
+        "produces": [
+          "text/turtle",
+          "application/rdf+xml",
+          "application/json-ld",
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "path",
+            "description": "ID of the model identifying an OSLC service",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid ids - of the model or of an elment"
+          }
+        }
+      }
+    },
+    "/{model}/resource/{id}": {
+      "get": {
+        "tags": [
+          "Element"
+        ],
+        "summary": "Get properties of a certain model element",
+        "description": "OSLC description of a model element is an RDF structure, in few syntaxes, including usually the turtle syntax, of all properties of the model element, identified by its id.",
+        "operationId": "getElement",
+        "produces": [
+          "text/turtle",
+          "application/rdf+xml",
+          "application/json-ld",
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "path",
+            "description": "ID of the model identifying an OSLC service",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of an element in the model",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid ids - of the model or of an elment"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about OPCloud",
+    "url": "http://esml.iem.technion.ac.il/"
+  }
+}

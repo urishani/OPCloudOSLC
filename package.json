@@ -68,7 +68,9 @@
     "pug": "^2.0.0-beta6",
     "rdflib": "^0.16.3",
     "request": "^2.78.0",
-    "swagger-client": "^3.4.5"
+    "swagger-client": "^3.4.5",
+    "swagger-node-express": "~2.0",
+    "minimist": "*"
   },
   "devDependencies": {
     "@angular/cli": "^1.6.4",

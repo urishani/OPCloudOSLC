@@ -1,5 +1,7 @@
-export let allResourcesTemplate = (): string => {
-  return `@prefix oslc: <http://open-service.net/ns/core#> .
+export let allResourcesTemplate = (type:string='turtle'): string => {
+  const templates = {
+  'turtle':
+  `@prefix oslc: <http://open-service.net/ns/core#> .
 @prefix oslc_am: <http://open-service.net/ns/am#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -12,5 +14,6 @@ model:resource/_id_ a opm:_type_ ;
   dcterms:title "_name_" ;
   dcterms:description "_description_ .
 _/elements_
-`;
+`};
+return templates[type];
 };

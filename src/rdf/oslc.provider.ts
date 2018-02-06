@@ -1,5 +1,7 @@
-export let providerTemplate = (): string => {
-  return `@prefix oslc: <http://open-service.net/ns/core#> .
+export let providerTemplate = (type:string='turtle'): string => {
+  const templates = {
+    'turtle':
+`@prefix oslc: <http://open-service.net/ns/core#> .
 @prefix oslc_am: <http://open-service.net/ns/am#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -19,7 +21,7 @@ model:serviceProvider
         oslc:queryCapability
           [ a oslc:QueryCapability ;
             oslc:queryBase <_host_/oslc/_model_/resource> ;
-            oslc:resourceType oslc_am:1.0/Resource ;
+            oslc:resourceType <http://open-service.net/ns/am#1.0/Resource> ;
             oslc:label "_name_" ;
             dcterms:title "_description_"
           ] ;
@@ -40,5 +42,7 @@ _prefixDefinition_
         oslc:prefixBase <_nameSpaceUri_>
       ]_semicolon_
 _/prefixDefinition_
-`;
+`
+};
+return templates[type];
 };

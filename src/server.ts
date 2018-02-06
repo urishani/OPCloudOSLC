@@ -5,6 +5,12 @@ import * as express from 'express';
 import * as compression from 'compression';  // compresses requests
 import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
+
+import * as minimist from 'minimist';
+const argv = minimist(process.argv.slice(2));
+
+import * as swagger from 'swagger-node-express';
+
 import * as logger from 'morgan';
 import * as errorHandler from 'errorhandler';
 import * as lusca from 'lusca';
@@ -96,7 +102,8 @@ function getModelIndex(callback) {
             }
             callback(modelIndex);
         });
-    }
+    } else
+    callback(modelIndex);
 }
 function getDbnames(callback: any): any {
   console.log('in getDbnames');
@@ -211,31 +218,6 @@ function fixModelIds(opmModel:Object): boolean {
 
 getDbnames(undefined);
 
-// setIds(mNames);
-
-// Some utils
-// function setIds(mnames: any) {
-//       counter.once('value').then((snapshot: any) => {
-//         let cnt = (snapshot.val() || {counter: 0}).counter;
-//         const origcnt = cnt;
-//         for (const element in mnames) {
-//           if (!mnames[element].id) {
-//             cnt++;
-//             mnames[element].id = makeModelId(cnt);
-//           }
-//         }
-//         if (cnt > origcnt) {
-//           console.log('Created ids. cnt: ' + origcnt + ' -> ' + cnt);
-//           counter.update({counter: cnt}, err => {
-//             if (err)
-//               console.log(err);
-//           });
-//           modelnames_.update(mnames);
-//         } else
-//           console.log('No changes to model names - all are set');
-//       });
-// }
-
 function makeModelId( cnt: number ) {
   return makeId(cnt);
 }
@@ -250,6 +232,44 @@ app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+// SWAGGER settings
+const subpath = express();
+app.use(bodyParser());
+app.use("/v1", subpath);
+swagger.setAppHandler(subpath);
+app.use(express.static('swagger-dist'));
+
+swagger.setApiInfo({
+    title: "OPCloud OSLC API",
+    description: "API for the OSLC services over OPCloud",
+    termsOfServiceUrl: "",
+    contact: "s.uri@technion.ac.il",
+    license: "MIT License",
+    licenseUrl: "https://opensource.org/licenses/MIT"
+});
+
+subpath.get('/', function (req, res) {
+    res.sendFile(__dirname + '/swagger-dist/index.html');
+});
+
+swagger.configureSwaggerPaths('', 'api-docs', '');
+
+let domain = 'localhost';
+if(argv.domain !== undefined)
+    domain = argv.domain;
+else
+    console.log('No --domain=xxx specified, taking default hostname "localhost".');
+const applicationUrl = 'http://' + domain;
+swagger.configure(applicationUrl, '1.0.0');
+
+// if (url && url.length > 1) {
+//     url = decodeURIComponent(url[1]);
+// } else {
+//     url = "/api-docs.json";
+// }
+
 // app.use(expressValidator());
 app.use(session({
   resave: true,
