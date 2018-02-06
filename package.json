@@ -73,9 +73,6 @@
     "minimist": "*"
   },
   "devDependencies": {
-    "@angular/cli": "^1.6.4",
-    "@angular/compiler": "^5.2.1",
-    "@angular/core": "^5.2.1",
     "@types/async": "^2.0.40",
     "@types/bcrypt-nodejs": "0.0.30",
     "@types/body-parser": "^1.16.2",

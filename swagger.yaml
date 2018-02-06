@@ -29,6 +29,8 @@ paths:
       operationId: "listServices"
       produces:
       - "application/turtle"
+      - "application/rdf+xml"
+      - "application/json-ld"
       - "text/html"
       responses:
         200:
@@ -42,6 +44,8 @@ paths:
       operationId: "listCapabilities"
       produces:
       - "application/turtle"
+      - "application/rdf+xml"
+      - "application/json-ld"
       - "text/html"
       parameters:
       - name: "model"
@@ -63,6 +67,8 @@ paths:
       operationId: "getElements"
       produces:
       - "application/turtle"
+      - "application/rdf+xml"
+      - "application/json-ld"
       - "text/html"
       parameters:
       - name: "model"
@@ -84,6 +90,8 @@ paths:
       operationId: "getElement"
       produces:
       - "application/turtle"
+      - "application/rdf+xml"
+      - "application/json-ld"
       - "text/html"
       parameters:
       - name: "model"
