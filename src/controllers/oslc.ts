@@ -28,15 +28,18 @@ export let getResource = function(handler: any) {
                         properties: [],
                         title: 'model ' + modelId + ' logical element id: ' + resourceId,
                         host: hostname,
+                        text: resource.text,
                         model: modelId,
                         id: resource['id'],
                         type: resource['name'],
-                        description: resource['description'] || "No description for this resource"
+                        description: resource['description'] || "No description for this resource",
+                        semicolon: ';'
                     };
 //                    console.log(`resource in json [${JSON.stringify(resource)}]`);
-                    options.properties.push({property: 'text', value: resource['text'], semicolon: ';'});
-                    options.properties.push({property: 'linkConnectionType', value: resource['linkConnectionType'], semicolon: ';'});
-                    options.properties.push({property: 'linkType', value: resource['linkType'], semicolon: ';'});
+                    if (resource.linkConnectionType)
+                        options.properties.push({property: 'linkConnectionType', value: resource.linkConnectionType, semicolon: ';'});
+                    if (resource.linkType)
+                        options.properties.push({property: 'linkType', value: resource.linkType, semicolon: ';'});
                     for (const param in {}) { // resource.getElementParams()) {
                        options.properties.push({
                             property: param,
@@ -44,14 +47,22 @@ export let getResource = function(handler: any) {
                             semicolon: ';',
                         });
                     }
-                    options.properties[options.properties.length-1]['semicolon'] = '.';
-//                    console.log(`resource options: [${options}`);
-                    if (req.accepts('html'))
+                    if (options.properties.length > 0)
+                        options.properties[options.properties.length-1].semicolon = '.';
+                    else
+                        options.semicolon = '.';
+//                  console.log(`resource options: [${options}`);
+                    if (req.accepts('html')) {
                         res.render('oslc-resource', options);
-                    else {
-                        console.log('Responding with turtle');
-                        res.set('Content-Type', 'text/turtle');
-                        res.status(200).send(mergeTemplate(resourceTemplate(), options));
+                    } else if (req.accepts('application/rdf+xml')) {
+                        res.set('Content-Type', 'application/rdf+xml').
+                        status(200).send(mergeTemplate(resourceTemplate('xml'), options));
+                    } else if (req.accepts('application/json-ld')) {
+                        res.set('Content-Type', 'application/json-ld').
+                        status(200).send(mergeTemplate(resourceTemplate('json'), options));
+                    } else {
+                        res.set('Content-Type', 'text/turtle').
+                        status(200).send(mergeTemplate(resourceTemplate('turtle'), options));
                     }
                     break;
                 }
