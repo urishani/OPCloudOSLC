@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {OpmLogicalEntity} from 'opcloud/src/app/models/LogicalPart/OpmLogicalEntity';
+//import {OpmLogicalEntity} from 'opcloud/src/app/models/LogicalPart/OpmLogicalEntity';
 
 import {catalogTemplate} from '../rdf/oslc.provider.catalog';
 import {providerTemplate} from '../rdf/oslc.provider';
@@ -195,23 +195,23 @@ export let getServiceProvider = function(handler: any) {
     };
 };
 
-import {OpmModel} from 'opcloud/src/app/models/OpmModel';
-import {OpmLogicalElement} from 'opcloud/src/app/models/LogicalPart/OpmLogicalElement';
-import {OpmVisualElement} from 'opcloud/src/app/models/VisualPart/OpmVisualElement';
+//import {OpmModel} from 'opcloud/src/app/models/OpmModel';
+//import {OpmLogicalElement} from 'opcloud/src/app/models/LogicalPart/OpmLogicalElement';
+//import {OpmVisualElement} from 'opcloud/src/app/models/VisualPart/OpmVisualElement';
 
-const makeElementId = (modelElement: OpmLogicalElement<OpmVisualElement>): string => {
-    const model = modelElement.opmModel;
-    if (!model["counter"]) {
-        model["counter"] = 0;
-    }
-    if (!modelElement["id"]) {
-        model["counter"] ++;
-        model["changed"] = true;
-        modelElement["id"] = makeId(model["counter"], 'R');
-        model["changeTime"] = new Date();
-    }
-    return modelElement["id"];
-};
+// const makeElementId = (modelElement: OpmLogicalElement<OpmVisualElement>): string => {
+//     const model = modelElement.opmModel;
+//     if (!model["counter"]) {
+//         model["counter"] = 0;
+//     }
+//     if (!modelElement["id"]) {
+//         model["counter"] ++;
+//         model["changed"] = true;
+//         modelElement["id"] = makeId(model["counter"], 'R');
+//         model["changeTime"] = new Date();
+//     }
+//     return modelElement["id"];
+// };
 export let getAllResources = function(handler: any) {
     return function (req: Request, res: Response) {
         const hostname = req.protocol + '://' + req.headers.host;

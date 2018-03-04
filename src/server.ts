@@ -25,9 +25,9 @@ import * as passport from 'passport';
 
 import {mergeTemplate, toHtml, makeId} from './utils/utils';
 
-import {OpmModel} from 'opcloud/src/app/models/OpmModel';
-import {OpmLogicalElement} from 'opcloud/src/app/models/LogicalPart/OpmLogicalElement';
-import {OpmVisualElement} from 'opcloud/src/app/models/VisualPart/OpmVisualElement';
+//import {OpmModel} from 'opcloud/src/app/models/OpmModel';
+//import {OpmLogicalElement} from 'opcloud/src/app/models/LogicalPart/OpmLogicalElement';
+//import {OpmVisualElement} from 'opcloud/src/app/models/VisualPart/OpmVisualElement';
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.

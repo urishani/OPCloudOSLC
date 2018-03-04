@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  firebaseCredentials: {
+  firebaseCredentials_sandbox: {
     apiKey: 'AIzaSyCxHFmE_7akLn3uZE1K2Me7N5lgIP94dsg',
     authDomain: 'opcloud-sandbox.firebaseapp.com',
     databaseURL: 'https://opcloud-sandbox.firebaseio.com',
@@ -13,7 +13,7 @@ export const environment = {
     storageBucket: 'opcloud-sandbox.appspot.com',
     messagingSenderId: '510910097862'
     },
-  firebaseCredentials_client: {
+  firebaseCredentials: {
     apiKey: 'AIzaSyDCcM4LU4GtKEAUtpW-xjfL1Vq9G8K0J2w',
     authDomain: 'opcloud-client.firebaseapp.com',
     databaseURL: 'https://opcloud-client.firebaseio.com',
