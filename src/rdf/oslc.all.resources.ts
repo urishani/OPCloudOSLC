@@ -6,7 +6,7 @@ export let allResourcesTemplate = (type:string='turtle'): string => {
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix opm: <http://opm.technion.ac.il/opm#> .
-@prefix resource: <_host_/oslc/_model_/resource> .
+@prefix resource: <_host_/oslc/_model_/resource/> .
 # Resources:
 _elements_
 resource:_id_ a opm:_type_ ;
@@ -28,6 +28,20 @@ _elements_
     <dcterms:description>_description_</dcterms:description>
   </rdf:Description>
   _/elements_
-`};
+`,
+'json':
+`
+[
+  _elements_
+  {
+    "@id": "_host_/oslc/_model_/resource/_id_",
+    "@type": ["http://opm.technion.ac.il/opm#_type_"],
+    "http://open-service.net/ns/core#name": [{"@value":"_id_"}],
+    "http://purl.org/dc/terms/title": [{"@value":"_text_"}],
+    "http://purl.org/dc/terms/description": [{"@value":"_description_"}]
+  },
+  _/elements_
+]
+ `};
 return templates[type];
 };

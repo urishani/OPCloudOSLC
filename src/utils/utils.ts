@@ -23,14 +23,7 @@ export let mergeTemplate = (template: string, options: any, escape = '_'): strin
       if (val instanceof Array) {
         const key1 = escape[0] + option + escape[1];
         const key2 = escape[0] + '/' + option + escape[1];
-        let pre, body, post;
-        [pre, body, post] = partition(template, key1, key2);
-        let result = pre;
-        for (const i in val) {
-          const part = val[i];
-          result += mergeTemplate(body, part, escape);
-        }
-        template =  result + post;
+        template = subMergeTemplate(template, key1, key2, val, escape);
         continue;
       }
       const key = escape[0] + option + escape[1];
@@ -42,6 +35,19 @@ export let mergeTemplate = (template: string, options: any, escape = '_'): strin
     }
     return template;
   };
+
+  let subMergeTemplate = (template:string, key1:string, key2:string, val:Array<string>, escape:string):string => {
+    let pre, body, post;
+    [pre, body, post] = partition(template, key1, key2);
+    if (body.length == 0)
+       return pre;
+    let result = pre;
+    for (const i in val) {
+      const part = val[i];
+      result += mergeTemplate(body, part, escape);
+    }
+    return result + subMergeTemplate(post, key1, key2, val, escape);
+  }
 
 const hasRefs = (line: string): boolean => {
   return line.indexOf('<_host_//') >= 0;

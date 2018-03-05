@@ -188,8 +188,10 @@ export let getServiceProvider = function(handler: any) {
                 name: aModel.name,
                 description: aModel.description || 'A model with no description',
                 prefixDefinition: [
-                    { prefix: 'opm', nameSpaceUri: 'http://opm.technion.ac.il/opm#', semicolon: ';'},
-                    { prefix: 'model', nameSpaceUri: hostname + '/oslc/' + modelId + '/', semicolon: '.'}
+                    { prefix: 'opm', nameSpaceUri: 'http://opm.technion.ac.il/opm#', 
+                        semicolon: ';', jsonComma: ",", prefixNum: 10},
+                    { prefix: 'model', nameSpaceUri: hostname + '/oslc/' + modelId + '/', 
+                        semicolon: '.', jsonComma: "", prefixNum: 11}
                 ]
             };
             console.log('catalog options: ' + options);
@@ -198,9 +200,12 @@ export let getServiceProvider = function(handler: any) {
             } else if (req.accepts('application/rdf+xml')) {
                 res.set('Content-Type', 'application/rdf+xml').
                 status(200).send(mergeTemplate(providerTemplate('xml'), options));
+            } else if (req.accepts('application/json-ld')) {
+                res.set('Content-Type', 'application/json-ld').
+                status(200).send(mergeTemplate(providerTemplate('json'), options));
             } else {
                 res.set('Content-Type', 'text/turtle').
-                status(200).send(mergeTemplate(providerTemplate(), options));
+                status(200).send(mergeTemplate(providerTemplate('turtle'), options));
             }
         });
     };
@@ -247,14 +252,20 @@ export let getAllResources = function(handler: any) {
                     text: logicalElement['text'] || 'NoText' ,
                     description: logicalElement['description'] || "No description",
                     type: logicalElement['name'] || 'NoType',
+                    comma: ',',
                 });
             }
+            if (options.elements.length > 0)
+                options.elements[options.elements.length-1] = '';
             console.log('resource options: ' + JSON.stringify(options));
             if (req.accepts('html')) {
                 res.render('oslc-all-resources', options);
             } else if (req.accepts('application/rdf+xml')) {
                 res.set('Content-Type', 'application/rdf+xml').
                 status(200).send(mergeTemplate(allResourcesTemplate('xml'), options));
+            } else if (req.accepts('application/json-ld')) {
+                res.set('Content-Type', 'application/json-ld').
+                status(200).send(mergeTemplate(allResourcesTemplate('json'), options));
             } else {
                 res.set('Content-Type', 'text/turtle').
                 status(200).send(mergeTemplate(allResourcesTemplate(), options));
