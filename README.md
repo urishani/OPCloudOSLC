@@ -41,6 +41,6 @@ Doing a curl for this URL and any of the subsequent URLs for the service provide
 - OSLC Resources - Using the URL **/oslc/Mnnnn/Resource** will list all resources of that service provider, with each having an Id in the format Rnnnn with nnnn being a decimal number. Clicking on any of the listed URLs will open that URL in the same way as described above.
 - OSLC Resource nnnn - Using the URL **/oslc/Mnnnn/Resource/Rmmmm** answers with the RDF for that resource, in either of text/html (for a browser access), text/turtle and application/rdf+xml for RDF content.
 
-# API onlin documentation
+# API on-line documentation
 Accessing the base URL for the server will respond with a SWAGGER API online documentation that describes all the possible OSLC APIs of the server, and will allow to try them out, responding accordingly. URL for this is the plain root of the server URL **/**. E.g., http://localhost:3000.
 
