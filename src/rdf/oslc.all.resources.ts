@@ -31,17 +31,31 @@ _elements_
 `,
 'json':
 `
-[
-  _elements_
-  {
-    "@id": "_host_/oslc/_model_/resource/_id_",
-    "@type": ["http://opm.technion.ac.il/opm#_type_"],
-    "http://open-service.net/ns/core#name": [{"@value":"_id_"}],
-    "http://purl.org/dc/terms/title": [{"@value":"_text_"}],
-    "http://purl.org/dc/terms/description": [{"@value":"_description_"}]
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "opm": "http://opm.technion.ac.il/opm#",
+    "oslc": "http://open-service.net/ns/core#",
+    "oslc_am": "http://open-service.net/ns/am#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "resource": "_host_/oslc/_model_/resource/"
   },
+
+  "@graph": [
+  _elements_
+    {
+      "@id": "resource:_id_",
+      "@type": "opm:_type_",
+      "oslc:name": _id_",
+      "dcterms:title": _text_",
+      "dcterms:description": "_description_"
+    }_comma_
   _/elements_
-]
+  ]
+}
  `};
 return templates[type];
 };

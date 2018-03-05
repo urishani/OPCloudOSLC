@@ -256,7 +256,7 @@ export let getAllResources = function(handler: any) {
                 });
             }
             if (options.elements.length > 0)
-                options.elements[options.elements.length-1] = '';
+                options.elements[options.elements.length-1].comma = '';
             console.log('resource options: ' + JSON.stringify(options));
             if (req.accepts('html')) {
                 res.render('oslc-all-resources', options);

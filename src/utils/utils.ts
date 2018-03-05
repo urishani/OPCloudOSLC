@@ -2,11 +2,11 @@
 
 const partition = (template: string, key1: string, key2: string): [string, string, string] => {
     const i = template.indexOf(key1);
-    if (i < 0) return ['', template, ''];
+    if (i < 0) return [template, '', ''];
     const j = template.substr(i + key1.length).indexOf(key2);
     if (j < 0) {
         console.log('error in partitioning [${template}: key2 [${key2}] not found following key1 [${key1}].');
-        return ['', template, ''];
+        return [template, '', ''];
     }
     const pre = template.substr(0, i);
     const body = template.substr(i + key1.length, j);
