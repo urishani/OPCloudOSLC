@@ -47,9 +47,10 @@ block content
           li(style="list-style-type: none;") ]  
             b ;
     h2 list all service providers urls (in our case: OPM projects):
+    b oslc:serviceProvider
     ul
       for sp in serviceProviderUrl
-        li(style="list-style-type: none;")  oslc:serviceProvider 
+        li(style="list-style-type: none;")  
           <a href="#{host}/oslc/#{sp.model}/serviceProvider">&lt;#{host}/oslc/#{sp.model}/serviceProvider></a> 
           b #{sp.comma}
     h2 Service providers info:

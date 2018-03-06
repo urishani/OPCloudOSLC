@@ -17,9 +17,11 @@ block content
     ul
       li(style="list-style-type: none;") a opm:#{type}
         b ;
-      li(style="list-style-type: none;") oslc:label "#{name}" 
+      li(style="list-style-type: none;") oslc:name "#{id}" 
         b ;
-      li(style="list-style-type: none;") oslc:description "#{description}" 
+      li(style="list-style-type: none;") dcterms:title "#{text}" 
+        b ;
+      li(style="list-style-type: none;") dcterms:description "#{description}" 
         b ;
       for property in properties
         li(style="list-style-type: none;") opm:#{property.property} "#{property.value}"
