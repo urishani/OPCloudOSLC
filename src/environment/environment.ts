@@ -23,5 +23,9 @@ export const environment = {
   },
   firebaseAuthProviders: [
     'google'
-  ]
+  ],
+  mongodbCredentials: {
+      databaseURL: 'mongodb://localhost:27017',
+      databaseName: 'OPCloud'
+  }
 };

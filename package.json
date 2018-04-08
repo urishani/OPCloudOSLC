@@ -61,6 +61,7 @@
     "lusca": "^1.4.1",
     "mathjs": "^3.17.0",
     "minimist": "*",
+    "mongodb": "^3.0.5",
     "mongoose": "^4.6.6",
     "morgan": "^1.7.0",
     "nodemailer": "^2.6.4",
