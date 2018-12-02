@@ -21,7 +21,7 @@ export const environment = {
     storageBucket: 'opcloud-client.appspot.com',
     messagingSenderId: '926349859368'
   },
-  firebaseAuthProviders: [
+    firebaseAuthProviders: [
     'google'
   ]
 };

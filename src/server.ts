@@ -236,7 +236,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // SWAGGER settings
 const subpath = express();
-app.use(bodyParser());
+// app.use(bodyParser());
 app.use("/v1", subpath);
 swagger.setAppHandler(subpath);
 app.use(express.static('swagger-dist'));
